@@ -2,8 +2,8 @@
 // Project	Win32 俄罗斯方块程序
 // File		Tetris.h 主程序头文件
 // Update	2019.08
-// Author	miller http://www.EasyIDE.cn
-// Download 源码爱好者：http://www.NewXing.com
+// Author	miller https://github.com/similarduckweed/
+// Download 下载：https://github.com/similarduckweed/Tetris/
 // Tools	Visual C++ 6.0 & Editplus 3
 //=========================================================
 

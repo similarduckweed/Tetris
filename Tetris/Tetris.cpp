@@ -3,7 +3,7 @@
 // File		Tetris.cpp 主程序
 // Update	2019.08
 // Author	miller https://github.com/similarduckweed
-// Download 源码爱好者：http://www.NewXing.com
+// Download 下载：https://github.com/similarduckweed/Tetris/
 // Tools	Visual Studio 2017
 //=========================================================
 
@@ -12,7 +12,7 @@
 
 int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR szCmdLine, int nCmdShow)
 {
-	static TCHAR	szClsName[] = TEXT("Tetris");
+	static TCHAR	szClsName[] = _T("Tetris");
 	HWND  hWnd;
 	MSG   msg;
 
@@ -45,8 +45,8 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR szCmd
 	{
 		::MessageBox(
 			NULL,
-			TEXT("This program requires Windows NT!"),
-			TEXT("RegisterClass ERROR"),
+			_T("This program requires Windows NT!"),
+			_T("RegisterClass ERROR"),
 			MB_ICONERROR);
 			return 0;
 	}
@@ -362,19 +362,19 @@ void GameStart(HWND hWnd)
 
 	//初始化计分器
 	iLevel = 1;
-	wsprintf(szBuffer, TEXT("%i"), iLevel);
+	wsprintf(szBuffer, _T("%i"), iLevel);
 	SetWindowText(hLevel, szBuffer); //级别
 
 	iLayer = 0;
-	wsprintf(szBuffer, TEXT("%i"), iLayer);
+	wsprintf(szBuffer, _T("%i"), iLayer);
 	SetWindowText(hLayer, szBuffer); //满行
 
 	if (iSorce > iSorceMax) iSorceMax = iSorce;
-	wsprintf(szBuffer, TEXT("%i"), iSorceMax);
+	wsprintf(szBuffer, _T("%i"), iSorceMax);
 	SetWindowText(hSorceMax, szBuffer); //最高分
 
 	iSorce = 0;
-	wsprintf(szBuffer, TEXT("%i"), iSorce);
+	wsprintf(szBuffer, _T("%i"), iSorce);
 	SetWindowText(hSorce, szBuffer); //得分
 
 	//状态栏提示
@@ -391,13 +391,13 @@ void GamePause(HWND hWnd)
 	if (bStart)
 	{
 		KillTimer(hWnd, 1);
-		SendMessage(hStatus, SB_SETTEXT, 0, (LPARAM)TEXT("游戏暂停"));
+		SendMessage(hStatus, SB_SETTEXT, 0, (LPARAM)_T("游戏暂停"));
 		TetrisMusic(FALSE);
 	}
 	else
 	{
 		SetTimer(hWnd, 1, (550 - 55 * iLevel), NULL);
-		SendMessage(hStatus, SB_SETTEXT, 0, (LPARAM)TEXT("游戏中 ^-^"));
+		SendMessage(hStatus, SB_SETTEXT, 0, (LPARAM)_T("游戏中 ^-^"));
 		TetrisMusic(TRUE);
 	}
 	bStart = !bStart;
@@ -413,7 +413,7 @@ void GameOver(HWND hWnd)
 	hdc = GetDC(hWnd);
 	BitBlt(hdc, 40, 200, 160, 50, hDcAlert, 0, 0, SRCCOPY);//绘制提示语
 	ReleaseDC(hWnd, hdc);
-	SendMessage(hStatus, SB_SETTEXT, 0, (LPARAM)TEXT("游戏结束"));
+	SendMessage(hStatus, SB_SETTEXT, 0, (LPARAM)_T("游戏结束"));
 
 	bGOver = TRUE;
 	x = 4; y = -1;
@@ -429,19 +429,19 @@ int TetrisIni(int value)
 	TCHAR szIniFile[100];
 
 	SHGetSpecialFolderPath(0, szIniFile, CSIDL_APPDATA, 0);
-	lstrcat(szIniFile, TEXT("\\Win32Tetris"));
+	lstrcat(szIniFile, _T("\\Win32Tetris"));
 	CreateDirectory(szIniFile, NULL);
-	lstrcat(szIniFile, TEXT("\\Config.ini"));
+	lstrcat(szIniFile, _T("\\Config.ini"));
 
 	if (value == 0)
 	{//读
-		iSorceMax = GetPrivateProfileInt(TEXT("Win32Tetris"), TEXT("SorceMax"), 0, szIniFile);
+		iSorceMax = GetPrivateProfileInt(_T("Win32Tetris"), _T("SorceMax"), 0, szIniFile);
 	}
 	else
 	{//写
-		wsprintf(szBuffer, TEXT("%i"), value);
-		WritePrivateProfileString(TEXT("Win32Tetris"), TEXT("Contact"), TEXT("www.EasyIDE.cn"), szIniFile);
-		WritePrivateProfileString(TEXT("Win32Tetris"), TEXT("SorceMax"), szBuffer, szIniFile);
+		wsprintf(szBuffer, _T("%i"), value);
+		WritePrivateProfileString(_T("Win32Tetris"), _T("Contact"), _T("www.EasyIDE.cn"), szIniFile);
+		WritePrivateProfileString(_T("Win32Tetris"), _T("SorceMax"), szBuffer, szIniFile);
 	}
 
 	return iSorceMax;
@@ -680,21 +680,21 @@ void DropTetris(HWND hWnd)
 			{
 				//更新计分器
 				iLayer += 1;
-				wsprintf(szBuffer, TEXT("%i"), iLayer);
+				wsprintf(szBuffer, _T("%i"), iLayer);
 				SetWindowText(hLayer, szBuffer); //满行
 				iSorce += 10;
-				wsprintf(szBuffer, TEXT("%i"), iSorce);
+				wsprintf(szBuffer, _T("%i"), iSorce);
 				SetWindowText(hSorce, szBuffer); //得分
 				if (iSorce >= (iLevel * 50 + 50)*iLevel / 2) //升级
 				{
 					iLevel++;
-					wsprintf(szBuffer, TEXT("%i"), iLevel);
+					wsprintf(szBuffer, _T("%i"), iLevel);
 					SetWindowText(hLevel, szBuffer);
-					SendMessage(hStatus, SB_SETTEXT, 1, (LPARAM)TEXT("恭喜升级！"));
+					SendMessage(hStatus, SB_SETTEXT, 1, (LPARAM)_T("恭喜升级！"));
 				}
 				else
 				{
-					wsprintf(szBuffer, TEXT("恭喜加分！距离下次升级还需 %i 分！"), (iLevel * 50 + 50)*iLevel / 2 - iSorce);
+					wsprintf(szBuffer, _T("恭喜加分！距离下次升级还需 %i 分！"), (iLevel * 50 + 50)*iLevel / 2 - iSorce);
 					SendMessage(hStatus, SB_SETTEXT, 1, (LPARAM)szBuffer);
 				}
 				//删除满行数据
@@ -909,7 +909,7 @@ void GameUI(HWND hWnd)
 
 	//工具栏下的黑线
 	CreateWindow(
-		TEXT("static"),  //lpClassName 类名
+		_T("static"),  //lpClassName 类名
 		NULL,  //lpWindowName 标题
 		WS_CHILD | WS_VISIBLE | SS_BLACKFRAME,
 		1, 24,
@@ -921,7 +921,7 @@ void GameUI(HWND hWnd)
 
 	//游戏区的外框
 	CreateWindow(
-		TEXT("static"),
+		_T("static"),
 		NULL,
 		WS_CHILD | WS_VISIBLE | SS_GRAYFRAME,
 		17, 37,
@@ -933,7 +933,7 @@ void GameUI(HWND hWnd)
 
 	//预览区的外框
 	CreateWindow(
-		TEXT("static"),
+		_T("static"),
 		NULL,
 		WS_CHILD | WS_VISIBLE | SS_GRAYFRAME,
 		237, 37,
@@ -945,8 +945,8 @@ void GameUI(HWND hWnd)
 
 	//级别
 	hTemp = CreateWindow(
-		TEXT("static"),
-		TEXT("级别 :"),
+		_T("static"),
+		_T("级别 :"),
 		WS_CHILD | WS_VISIBLE | SS_LEFT,
 		240, 190,
 		48, 12,
@@ -957,7 +957,7 @@ void GameUI(HWND hWnd)
 	SetNormalText(hTemp, FALSE);
 	hLevel = CreateWindowEx(
 		WS_EX_STATICEDGE,
-		TEXT("static"),
+		_T("static"),
 		NULL,
 		WS_CHILD | WS_VISIBLE | WS_GROUP | SS_RIGHT | SS_CENTERIMAGE,
 		280, 186,
@@ -970,8 +970,8 @@ void GameUI(HWND hWnd)
 
 	//满行
 	hTemp = CreateWindow(
-		TEXT("static"),
-		TEXT("满行 :"),
+		_T("static"),
+		_T("满行 :"),
 		WS_CHILD | WS_VISIBLE | SS_LEFT,
 		240, 220,
 		36, 12,
@@ -982,7 +982,7 @@ void GameUI(HWND hWnd)
 	SetNormalText(hTemp, FALSE);
 	hLayer = CreateWindowEx(
 		WS_EX_STATICEDGE,
-		TEXT("static"),
+		_T("static"),
 		NULL,
 		WS_CHILD | WS_VISIBLE | WS_GROUP | SS_RIGHT | SS_CENTERIMAGE,
 		280, 216,
@@ -995,8 +995,8 @@ void GameUI(HWND hWnd)
 
 	//得分
 	hTemp = CreateWindow(
-		TEXT("static"),
-		TEXT("得分 :"),
+		_T("static"),
+		_T("得分 :"),
 		WS_CHILD | WS_VISIBLE | SS_LEFT,
 		240, 250,
 		36, 12,
@@ -1007,7 +1007,7 @@ void GameUI(HWND hWnd)
 	SetNormalText(hTemp, FALSE);
 	hSorce = CreateWindowEx(
 		WS_EX_STATICEDGE,
-		TEXT("static"),
+		_T("static"),
 		NULL,
 		WS_CHILD | WS_VISIBLE | WS_GROUP | SS_RIGHT | SS_CENTERIMAGE,
 		280, 246,
@@ -1020,8 +1020,8 @@ void GameUI(HWND hWnd)
 
 	//最高分
 	hTemp = CreateWindow(
-		TEXT("static"),
-		TEXT("最高分"),
+		_T("static"),
+		_T("最高分"),
 		WS_CHILD | WS_VISIBLE | SS_LEFT,
 		240, 280,
 		36, 12,
@@ -1032,7 +1032,7 @@ void GameUI(HWND hWnd)
 	SetNormalText(hTemp, FALSE);
 	hSorceMax = CreateWindowEx(
 		WS_EX_STATICEDGE,
-		TEXT("static"),
+		_T("static"),
 		NULL,
 		WS_CHILD | WS_VISIBLE | WS_GROUP | SS_RIGHT | SS_CENTERIMAGE,
 		280, 276,
@@ -1045,7 +1045,7 @@ void GameUI(HWND hWnd)
 
 	//方向键 上
 	CreateWindow(
-		TEXT("button"),
+		_T("button"),
 		NULL,
 		WS_CHILD | WS_VISIBLE | BS_OWNERDRAW,
 		280, 340,
@@ -1057,7 +1057,7 @@ void GameUI(HWND hWnd)
 
 	//方向键 下
 	CreateWindow(
-		TEXT("button"),
+		_T("button"),
 		NULL,
 		WS_CHILD | WS_VISIBLE | BS_OWNERDRAW,
 		280, 370,
@@ -1069,7 +1069,7 @@ void GameUI(HWND hWnd)
 
 	//方向键 左
 	CreateWindow(
-		TEXT("button"),
+		_T("button"),
 		NULL,
 		WS_CHILD | WS_VISIBLE | BS_OWNERDRAW,
 		253, 355,
@@ -1081,7 +1081,7 @@ void GameUI(HWND hWnd)
 
 	//方向键 右
 	CreateWindow(
-		TEXT("button"),
+		_T("button"),
 		NULL,
 		WS_CHILD | WS_VISIBLE | BS_OWNERDRAW,
 		307, 355,
@@ -1092,8 +1092,8 @@ void GameUI(HWND hWnd)
 		NULL);
 
 	hTemp = CreateWindow(
-		TEXT("static"),
-		TEXT("下载本程序源代码请访问作者主页：http://www.EasyIDE.cn"),
+		_T("static"),
+		_T("程序源代码请访问主页：https://github.com/similarduckweed/Tetris/"),
 		WS_CHILD | WS_VISIBLE | SS_LEFT | WS_DISABLED,
 		18, 433,
 		500, 12,
